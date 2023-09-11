@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Add any necessary meta tags, stylesheets, or scripts here -->
+</head>
+<body>
+    <h2><strong>Standard Operating Procedure</strong></h2>
+    <ul>
+        {% for class_id, class_name in class_name_dict.items() %}
+            <li>
+                <label>
+                    <input type="checkbox" name="object" value="{{ class_name }}"
+                    {% if class_name in detected_objects %} checked {% endif %}>
+                    {{ class_name }}
+                </label>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2><strong>Status</strong></h2>
+    {% if detected_objects|length > 2 %}
+        <p class="pass">Pass</p>
+    {% else %}
+        <p class="fail">Fail</p>
+    {% endif %}
+</body>
+</html>

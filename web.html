@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Video</title>
+   
+
+  <style>
+    body {
+      color: black;
+      margin: 0px;
+      padding: 0px;
+    }
+    header.feature-box.top {
+      background-color: white;
+      height: 100px;
+      margin: 0px;
+      padding: 20px;
+      text-align: center;
+    }
+    header.feature-box.second {
+      background-color: purple;
+      height: 50px;
+      text-align: center;
+      margin-top: -25px;
+    }
+    .features {
+      background-color: black;
+      width: 900px;
+      height: 700px;
+      border-radius: 35px;
+      object-fit: contain;
+      margin: 20px;
+    }
+    .container {
+      display: flex;
+    }
+    section.col-sm {
+      background-color: white;
+      width: 1000px;
+      height: 650px;
+      border-radius: 35px;
+      object-fit: contain;
+      margin: 40px;
+    }
+    img {
+      width: 900px;
+      height: 600px;
+      border-radius: 35px;
+      object-fit: contain;
+      margin: 40px;
+    }
+    .new {
+      color: black;
+      margin: 0px;
+      padding: 10px;
+      background-color: green;
+      margin: 0px;
+      margin-top: -10px;
+    }
+    /* Add custom styles for checkboxes */
+    ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    label {
+      display: inline-flex;
+      align-items: center;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    input[type="checkbox"] {
+      margin-right: 5px;
+    }
+    .pass {
+      color: green;
+      font-weight: bold;
+      font-size: 24px;
+      border: 2px solid green;
+      padding: 10px;
+      margin: 10px 0;
+    }
+    .fail {
+      color: red;
+      font-weight: bold;
+      font-size: 24px;
+      border: 2px solid red;
+      padding: 10px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+<header class="feature-box top">
+  <h1><strong>Final Fitment Gauge checking - Wiper</strong></h1>
+</header>
+<header class="feature-box second">
+  <h1><strong>Video</strong></h1>
+</header>
+
+<div class="container">
+  <div class="section section1" id="section1">
+    <div class="section-header">Live webcam</div>
+    <img src="{{ url_for('webapp') }}" alt="Upload video">
+  </div>
+  <div class="section section2" id="section2">
+    <div class="section-header">Live webcam</div>
+    {% set class_name_dict = {
+      0: "QR code scanning",
+      1: "spindle screw driver",
+      2: "spindle screw passenger",
+      3: "Go/No Go RHS",
+      4: "Go/No Go LHS"
+    } %}
+    <section class="col-sm" id="refresh-section">
+      <h2><strong>Standard Operating Procedure</strong></h2>
+      <ul>
+        {% for class_id, class_name in class_name_dict.items() %}
+          <li>
+            <label>
+              <input type="checkbox" name="object" value="{{ class_name }}" {% if class_name in detected_objects %} checked {% endif %}>
+              {{ class_name }}
+            </label>
+          </li>
+        {% endfor %}
+      </ul>
+      <h2><strong>Status</strong></h2>
+      {% if detected_objects|length > 2 %}
+        <p class="pass">Pass</p>
+      {% else %}
+        <p class="fail">Fail</p>
+      {% endif %}
+    </section>
+    
+  </div>
+</div>
+
+<script>
+  function refreshSection2() {
+    fetch('/section2_data_endpoint')  // Updated endpoint URL
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('refresh-section').innerHTML = data;  // Updated element ID
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
+  setInterval(refreshSection2, 10000);
+</script>
+
+
+
+</body>
+</html>
