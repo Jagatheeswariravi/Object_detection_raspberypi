@@ -11,7 +11,7 @@ from flask import jsonify
 from postprocessing import *
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'jagaravi'
+app.config['SECRET_KEY'] = 'LucasTVS'
 app.config['UPLOAD_FOLDER'] = 'static/files'
 
 classNames = {
